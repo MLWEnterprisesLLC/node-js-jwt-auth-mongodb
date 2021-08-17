@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
+const config = require("config")
+
 
 const app = express();
 
@@ -11,17 +13,19 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
+//parse requests of content-type - application/json
+//app.use(bodyParser.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+//parse requests of content-type - application/x-www-form-urlencoded
+//app.use(bodyParser.urlencoded({ extended: true }));
+const mongoURI = config.get("mongoURI")
 
 const db = require("./app/models");
 const Role = db.role;
 
+//`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
